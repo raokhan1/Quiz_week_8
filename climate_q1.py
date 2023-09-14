@@ -1,8 +1,17 @@
 import matplotlib.pyplot as plt
-        
-years = []
-co2 = []
-temp = []
+import sqlite3
+
+conn = sqlite3.connect("climate.db")
+cursor = conn.cursor()
+
+cursor.execute("SELECT Year, CO2, Temperature FROM climatedata")
+data = cursor.fetchall()
+
+years = [row[0] for row in data]
+co2 = [row[1] for row in data]
+temp = [row[2] for row in data]
+
+conn.close()
 
 plt.subplot(2, 1, 1)
 plt.plot(years, co2, 'b--') 
@@ -15,4 +24,4 @@ plt.plot(years, temp, 'r*-')
 plt.ylabel("Temp (C)") 
 plt.xlabel("Year (decade)") 
 plt.show() 
-plt.savefig("co2_temp_1.png") 
+plt.savefig("co2_temp_1.png")
